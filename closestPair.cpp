@@ -1,28 +1,35 @@
 #include <iostream>
 #include <fstream>
+#include <float.h>
+#include <cmath>
 using namespace std;
 
 
 struct Point {
   double x;
   double y;
+
+	Point& operator=(const Point& point){
+		this->x = point.x;
+		this->y = point.y;
+		return *this;
+	}
 };
 
-// Point& operator=(const Point& point){
-// 	this.x = point.x;
-// 	this.y = point.y;
-// 	return *this;
-// }
+
 bool isValidInput(char c);
 void printAllPoints();
 void sortPointsByXCoord();
 void sortPointsByYCoord();
 void swap(int index1, int index2);
+double distance(Point p1, Point p2);
+double bruteForce();
 
 
 static const int MAX_ARRAY_SIZE = 100;
 static int numPoints = 0;
 Point* pointsArr =  new Point[MAX_ARRAY_SIZE];
+double minDistance = DBL_MAX;
 
 int main(int argc, char* argv[]){
 	
@@ -93,17 +100,17 @@ int main(int argc, char* argv[]){
   
   // Once input is gathered
   // begin algorithm
-  if(argc > 2)
+  if(argc > 1)
   	algorithmChoice = argv[1];
-
-
-  if(argc < 2){
+  else {
     cout << "Please include an argument: brute, basic,"
 	 << " or optimal to indicate which method to use." << endl;
     return 0;
   }
+  
   if(algorithmChoice == "brute"){
     cout << "Initiating the brute force algrothim" << endl;
+    cout << "The minimum distance between all points is: " << bruteForce() << endl;
   } 
   else if(algorithmChoice == "basic") {
     cout << "Initiating the basic algorthim!" << endl;
@@ -112,19 +119,20 @@ int main(int argc, char* argv[]){
     cout << "Initiating the optimal algorithm!" << endl;
     
   }
-  else if(algorithmChoice == "EOF"){
-    cout << "END OF FILE" << endl;
-  }
+ 
   file.close();
 
-  cout << "initial print" << endl;
-  printAllPoints();
-  sortPointsByXCoord();
-  cout << "after sorting by X coordinate" << endl;
-  printAllPoints();
-  cout << "after sorting by y coordinate" << endl;
-  sortPointsByYCoord();
-  printAllPoints();
+  // cout << "initial print" << endl;
+  // printAllPoints();
+  // sortPointsByXCoord();
+  // cout << "after sorting by X coordinate" << endl;
+  // printAllPoints();
+  // cout << "after sorting by y coordinate" << endl;
+  // sortPointsByYCoord();
+  // printAllPoints();
+
+  // cout << "Calculating the distance between the two points: \n";
+  // cout << "Distance: " << distance(pointsArr[0], pointsArr[1]) << endl;
 }
 
 void printAllPoints(){
@@ -174,10 +182,23 @@ void sortPointsByYCoord(){
 }
 
 void swap(int index1, int index2){
-	double tempX = pointsArr[index1].x;
-	double tempY = pointsArr[index1].y;
-	pointsArr[index1].x = pointsArr[index2].x;
-	pointsArr[index1].y = pointsArr[index2].y;
-	pointsArr[index2].x = tempX;
-	pointsArr[index2].y = tempY;
+	Point temp = pointsArr[index1];
+	pointsArr[index1] = pointsArr[index2];
+	pointsArr[index2] = temp;
+}
+
+double distance(Point p1, Point p2){
+	return sqrt((p2.x-p1.x) * (p2.x - p1.x) + (p2.y-p1.y)*(p2.y-p1.y));
+}
+
+double bruteForce(){
+	for(int i = 0; i < numPoints; i++){
+		for(int j = 0; j < numPoints; j++){
+			if(i == j) continue;
+			double d = distance(pointsArr[i],pointsArr[j]);
+			if(d < minDistance)
+				minDistance = d;
+		}
+	}
+	return minDistance;
 }
