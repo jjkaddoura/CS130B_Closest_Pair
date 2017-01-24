@@ -15,10 +15,10 @@ struct Point {
 /////////////////////////
 /// MEMBERS
 /////////////////////////
-static const int MAX_ARRAY_SIZE = 100;
-static int numPoints;
-static Point* pointsArr;
-static double minDistance = DBL_MAX;
+int numPoints;
+Point* pointsArr;
+const int MAX_ARRAY_SIZE = 100;
+double minDistance = DBL_MAX;
 
 ////////////////////////
 /// METHODS
@@ -30,6 +30,8 @@ void sortPointsByYCoord();
 void swap(int index1, int index2);
 double distance(Point p1, Point p2);
 double bruteForce();
-
-
+double round(double coordinate);
+bool isDuplicate(Point p);
+int getNumPoints();
+void addPoint();
 #endif

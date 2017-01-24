@@ -5,7 +5,7 @@ BINARIES=closestPair
 
 all: ${BINARIES}
 
-closestPair: closestPair.o main.o 
+closestPair: closestPair.o 
 	${CXX} $^ -o $@ 
 
 clean:
