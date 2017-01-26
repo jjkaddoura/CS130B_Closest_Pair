@@ -1,5 +1,9 @@
+#include <float.h>
+#include <vector>
+using namespace std;
 #ifndef CLOSEST_PAIR_H
 #define Closest_PAIR_H
+
 
 struct Point {
 	double x;
@@ -10,6 +14,8 @@ struct Point {
 		this->y = point.y;
 		return *this;
 	}
+
+
 };
 
 /////////////////////////
@@ -17,21 +23,32 @@ struct Point {
 /////////////////////////
 int numPoints;
 Point* pointsArr;
-const int MAX_ARRAY_SIZE = 100;
+const int MAX_ARRAY_SIZE = 10000000;
 double minDistance = DBL_MAX;
 
 ////////////////////////
 /// METHODS
 ////////////////////////
+double findMinDistBruteForce();
+double findMinDistBasic();
+double findMinDistBasic(int start, int end);
+double findMinDistOptimal();
+double findMinDistOptimal(int start, int end);
+double minimum(double d, double dd);
+double distance(Point p1, Point p2);
+double round(double coordinate);
 bool isValidInput(char c);
+bool isDuplicate(Point p);
 void printAllPoints();
 void sortPointsByXCoord();
 void sortPointsByYCoord();
+void sortPointsByXCoord(int start, int end);
+void sortPointsByYCoord(int start, int end);
+// vector<Point> sortPointsByYCoord(vector<Point> points);
 void swap(int index1, int index2);
-double distance(Point p1, Point p2);
-double bruteForce();
-double round(double coordinate);
-bool isDuplicate(Point p);
+void incrementNumPoints();
+void decrementNumPoints();
 int getNumPoints();
-void addPoint();
+
+
 #endif
