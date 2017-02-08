@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 using namespace std;
 
 int main(int argc, char* argv []){
@@ -12,11 +14,15 @@ int main(int argc, char* argv []){
 
 	}
 
-	n = atoi(argv[1]);
 
-	for(int i = 0; i < n; i++){
-		cout << "jacob is awesome!!!" << endl;
+	srand(time(NULL));
+
+	for (int i = 0; i < atoi(argv[1]); i++) {
+		int max = -10000;
+		int min = 10000;
+		double random_one = min + (max-min)*(double)rand()/RAND_MAX;
+		double random_two = min + (max-min)*(double)rand()/RAND_MAX;
+		cout << random_one << " " << random_two << endl;
 	}
-
 
 }

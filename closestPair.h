@@ -23,13 +23,14 @@ struct Point {
 /////////////////////////
 int numPoints;
 Point* pointsArr;
-const int MAX_ARRAY_SIZE = 10000000;
-double minDistance = DBL_MAX;
+const int MAX_ARRAY_SIZE = 100000;
+vector<Point> answers;
 
 ////////////////////////
 /// METHODS
 ////////////////////////
 double findMinDistBruteForce();
+double findMinDistBruteForce(int start, int end);
 double findMinDistBasic();
 double findMinDistBasic(int start, int end);
 double findMinDistOptimal();
@@ -44,11 +45,13 @@ void sortPointsByXCoord();
 void sortPointsByYCoord();
 void sortPointsByXCoord(int start, int end);
 void sortPointsByYCoord(int start, int end);
-// vector<Point> sortPointsByYCoord(vector<Point> points);
 void swap(int index1, int index2);
 void incrementNumPoints();
 void decrementNumPoints();
 int getNumPoints();
+void checkResults(Point p1, Point p2);
+bool isDuplicatePair(Point p1, Point p2);
+void printAnswers();
 
 
 #endif
