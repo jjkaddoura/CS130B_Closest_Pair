@@ -9,6 +9,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+	answers.clear();
 	pointsArr = new Point[MAX_ARRAY_SIZE];
 	string algorithmChoice;
 	
@@ -45,7 +46,7 @@ int main(int argc, char* argv[])
 				}
 				point += inputChar;
 			}
-			else if(point.length() > 0 || (inputChar >= '0' && inputChar <= '9'))
+			else if(point.length()  || (inputChar >= '0' && inputChar <= '9'))
 			{
 				
 				// to get last digit of the coordinate
@@ -199,7 +200,7 @@ double findMinDistBruteForce()
 			else if(d == minDistance){
 				if(answers.size() > 1){
 					checkResults(pointsArr[i], pointsArr[j]);
-				} 
+				}
 
 			}
 		}
@@ -214,17 +215,19 @@ double findMinDistBruteForce(int start, int end){
 	for(i = start; i < end; i++){
 		for(j = start; j < end; j++){
 			if(i == j) continue;
-			else
-				d = distance(pointsArr[i],pointsArr[j]);
+			d = distance(pointsArr[i],pointsArr[j]);
 			if(d < minDistance){
 				minDistance = d;
-				checkResults(pointsArr[i],pointsArr[j]);
+				checkResults(pointsArr[i], pointsArr[j]); 
 			}
 			else if(d == minDistance){
+				if(answers.size() == 0){
+					answers.push_back(pointsArr[i]);
+					answers.push_back(pointsArr[j]);
+				}
+				else
+					checkResults(pointsArr[i], pointsArr[j]); 
 				
-					checkResults(pointsArr[i], pointsArr[j]);
-				 
-
 			}
 		}
 	}
@@ -245,8 +248,8 @@ void checkResults(Point p1, Point p2){
 			answers.push_back(p1);
 			answers.push_back(p2);
 		}
-		else if(d == distance(answers[i], answers[i+1])){
-			if(!isDuplicatePair(answers[i], answers[i+1])){
+		else if(d == distance(answers[i], answers[i+1]) ){
+			if(!isDuplicatePair(p1, p2)){
 				answers.push_back(p1);
 				answers.push_back(p2);
 			}
@@ -254,11 +257,11 @@ void checkResults(Point p1, Point p2){
 	}
 }
 bool isDuplicatePair(Point p1, Point p2){
-	for(int i = 0; i < answers.size(); i += 2){
-		if((p1.x == answers[i].x && p1.y == answers[i].y &&
-			p2.x == answers[i+1].x && p2.y == answers[i+1].y) ||
-			(p1.x == answers[i+1].x && p1.y == answers[i+1].y &&
-			p2.x == answers[i].x && p2.y == answers[i].y)){
+	for(int i = 0; i < answers.size(); i+=2){
+		if(((p1.x == answers[i].x) && (p1.y == answers[i].y) &&
+			(p2.x == answers[i+1].x) && (p2.y == answers[i+1].y)) ||
+			((p1.x == answers[i+1].x) && (p1.y == answers[i+1].y) &&
+			(p2.x == answers[i].x) && (p2.y == answers[i].y))){
 			return true;
 		}
 	}
@@ -306,10 +309,10 @@ double findMinDistBasic(int start, int end){
 	double d = minimum(min_left, min_right);
 
 	double median;
-	// bool evenNumOfPts = (end+start)%2 == 0;
-	// if(evenNumOfPts)
-	// 	median = (pointsArr[(start + end)/2].x + pointsArr[(start + end)/2 - 1].x)/2;
-	// else
+	bool evenNumOfPts = (end+start)%2 == 0;
+	if(evenNumOfPts)
+		median = (pointsArr[(start + end)/2].x + pointsArr[(start + end)/2 - 1].x)/2;
+	else
 	median = pointsArr[(start+end)/2].x;
 	vector<Point> middle;
 	int j = end;
@@ -322,15 +325,12 @@ double findMinDistBasic(int start, int end){
 	
 	}
 	for(i = (start+end)/2+1; i < end; i++){
-		if(abs(pointsArr[i].x - median) <= (d))
+		if(abs(pointsArr[i].x - median) <= (d)){
 			middle.push_back(pointsArr[i]);
+		}
 		else
 			break;
 	}
-	// for(int i = start; i < end; i++){
-	// 	if(abs(pointsArr[i].x - median) < d)
-	// 		middle.push_back(pointsArr[i]);
-	// }
 		
 	
 	if(middle.size() > 1){
@@ -348,14 +348,13 @@ double findMinDistBasic(int start, int end){
 
 			}
 		}
-	//	cout << "the size of the middle strip is: " << middle.size() << endl;
 		for(i = 0; i < middle.size(); i++){
 			for(j = i+1; j < middle.size(); j++){
 				if(i == j) continue;
 				if(middle[i].y - middle[j].y > d){
 					break;
 				}
-				if(distance(middle[i], middle[j]) < d){
+				if(distance(middle[i], middle[j]) <= d){
 					checkResults(middle[i],middle[j]);
 					d = distance(middle[i], middle[j]);
 				}
@@ -406,15 +405,15 @@ double findMinDistOptimal(int start, int end){
 
 
 	double median;
-	// bool evenNumOfPts = (start+end)%2 == 0;
-	// if(evenNumOfPts)
-	// 	median = (pointsArr[end/2].x + pointsArr[end/2 - 1].x)/2;
-	// else
+	bool evenNumOfPts = (start+end)%2 == 0;
+	if(evenNumOfPts)
+		median = (pointsArr[end/2].x + pointsArr[end/2 - 1].x)/2;
+	else
 	median = pointsArr[(start+end)/2].x;
 
 	
-	double min_left = findMinDistBasic(start, (start + end)/2);
-	double min_right = findMinDistBasic((start + end)/2, end);
+	double min_left = findMinDistOptimal(start, (start + end)/2);
+	double min_right = findMinDistOptimal((start + end)/2, end);
 	vector<Point> middle;
 	
 	
@@ -422,22 +421,24 @@ double findMinDistOptimal(int start, int end){
 
 	int j = end;
 	int i;
+
 	for(i = (start+end)/2; i > start; i--){
 		if(abs(pointsArr[i].x - median) <= d)
 			middle.push_back(pointsArr[i]);
+		else
+			break;
 	}
 	for(i = (start+end)/2+1; i < end; i++){
 		if(abs(pointsArr[i].x - median) <= d)
 			middle.push_back(pointsArr[i]);
+		else
+			break;
 	}
 
-	
-
-	//cout << "the size of the middle strip is: " << middle.size() << endl;
 	for(i = 0; i < middle.size(); i ++){
 		for(j = 0; j < middle.size(); j++){
 			if(i == j) continue;
-			if(distance(middle[i], middle[j]) < d){
+			if(distance(middle[i], middle[j]) <= d){
 				checkResults(middle[i], middle[j]);
 				d = distance(middle[i], middle[j]);
 			}

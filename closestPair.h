@@ -23,8 +23,9 @@ struct Point {
 /////////////////////////
 int numPoints;
 Point* pointsArr;
-const int MAX_ARRAY_SIZE = 100000;
+const int MAX_ARRAY_SIZE = 10000000;
 vector<Point> answers;
+
 
 ////////////////////////
 /// METHODS
